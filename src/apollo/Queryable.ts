@@ -1,8 +1,18 @@
+<<<<<<< Updated upstream
 import { Cache, DataProxy } from 'apollo-cache';
 import { DocumentNode } from 'graphql'; // eslint-disable-line import/no-extraneous-dependencies
+=======
 
-import { JsonObject } from '../primitive';
+import {
+  DataProxy,
+  Cache,
+} from 'apollo-cache';
+import { DocumentNode } from 'graphql'; // eslint-disable-line import/no-extraneous-dependencies, import/no-unresolved
+>>>>>>> Stashed changes
+
+import { JsonObject, PathPart } from '../primitive';
 import { Queryable } from '../Queryable';
+import { NodeId } from '../schema';
 
 import { toQuery } from './util';
 
@@ -77,5 +87,9 @@ export abstract class ApolloQueryable implements DataProxy {
   evict(options: Cache.EvictOptions): Cache.EvictionResult {
     const query = toQuery(options.query, options.variables);
     return this._queryable.evict(query);
+  }
+
+  forEachFieldInstance(nodeId: NodeId, path: PathPart[], iterator: Queryable.FieldInstanceIterator) {
+    return this._queryable.forEachFieldInstance(nodeId, path, iterator);
   }
 }

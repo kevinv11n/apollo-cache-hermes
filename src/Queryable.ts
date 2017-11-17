@@ -1,7 +1,13 @@
 import { DocumentNode } from 'graphql'; // eslint-disable-line import/no-extraneous-dependencies
 
-import { JsonObject, JsonValue } from './primitive';
-import { RawOperation } from './schema';
+import { JsonObject, JsonValue, PathPart } from './primitive';
+import { NodeId, RawOperation } from './schema';
+
+export namespace Queryable {
+  export interface FieldInstanceIterator {
+    (value: any, args?: JsonObject): void;
+  }
+}
 
 /**
  * Represents a queryable portion of our cache (the cache itself, transactions,
@@ -34,5 +40,10 @@ export interface Queryable {
    * Removes values for a selection to the cache
    */
   evict(query: RawOperation): { success: boolean };
+
+  /**
+   *
+   */
+  forEachFieldInstance(nodeId: NodeId, path: PathPart[], iterator: Queryable.FieldInstanceIterator): void;
 
 }

@@ -1,6 +1,12 @@
-import { NodeSnapshot } from './nodes';
+
+import lodashGet = require('lodash.get');
+
+import { NodeSnapshot, ParameterizedValueSnapshot } from './nodes';
 import { QueryResult, QueryResultWithNodeIds } from './operations/read';
+import { PathPart } from './primitive';
+import { Queryable } from './Queryable';
 import { NodeId, OperationInstance } from './schema';
+import { pathBeginsWith } from './util';
 
 export type NodeSnapshotMap = { [Key in NodeId]: NodeSnapshot; };
 /**
@@ -55,6 +61,28 @@ export class GraphSnapshot {
    */
   allNodeIds(): NodeId[] {
     return Object.keys(this._values);
+  }
+
+  forEachFieldInstance(nodeId: NodeId, path: PathPart[], iterator: Queryable.FieldInstanceIterator): void {
+    const node = this.getNodeSnapshot(nodeId);
+    if (!node) return;
+
+    // Trigger the iterator if there is a static version of the field.
+    const staticValue = lodashGet(node.data, path);
+    if (staticValue !== undefined) {
+      iterator(staticValue);
+    }
+
+    if (!node.outbound) return;
+    for (const reference of node.outbound) {
+      if (!pathBeginsWith(reference.path, path)) continue;
+      const referencedNode = this.getNodeSnapshot(reference.id);
+      // Any other kind of reference is already covered by the static iterator
+      // triggered above.
+      if (!(referencedNode instanceof ParameterizedValueSnapshot)) continue;
+
+      iterator(referencedNode.data, referencedNode.args);
+    }
   }
 
 }
