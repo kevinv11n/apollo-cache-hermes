@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "apollo-cache": "^1.0.0",
-    "apollo-utilities": "^1.0.0",
+    "apollo-utilities": "^1.0.3",
     "deep-freeze-strict": "^1.0.0",
     "lodash.get": "^4.0.0",
     "lodash.set": "^4.0.0",
