@@ -39,7 +39,7 @@
     "@types/lodash.findindex": "^4.4.3",
     "@types/lodash.get": "^4.4.3",
     "@types/lodash.set": "^4.3.3",
-    "@types/node": "^8.0.16",
+    "@types/node": "^8.0.56",
     "chai": "^4.1.0",
     "chai-as-promised": "^7.1.1",
     "chai-jest-diff": "nevir/chai-jest-diff#built-member-assertions",
